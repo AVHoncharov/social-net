@@ -1,25 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Header from "./components/Header/Header";
+import Avatar from "./components/Avatar/Avatar";
+import Navigation from "./components/Navigation/Navigation";
+import Profile from "./components/Content/Profile/Profile";
+import Footer from "./components/Footer/Footer";
+import Dialogs from "./components/Content/Dialogs/Dialogs";
+import { Route, BrowserRouter } from "react-router-dom";
+import News from "./components/Content/News/News";
+import Music from "./components/Content/Music/Music";
+import Settings from "./components/Content/Settings/Settings";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="wrapper">
+        <Header />
+        <Avatar />
+        <Navigation />
+        <div className="wrapper-content">
+          <Route path='/dialogs' component={Dialogs} />
+          <Route path='/profile' component={Profile} />
+          <Route path='/news' component={News} />
+          <Route path='/music' component={Music} />
+          <Route path='/settings' component={Settings} />
+        </div>
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 
