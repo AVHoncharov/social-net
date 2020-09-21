@@ -1,3 +1,11 @@
+.postsBlock{
+    grid-area: profile; 
+    overflow-y: auto; 
+    background-color: gray;
+
+    padding:10px;
+}
+
 .posts{
-    grid-area: profile; overflow-y: auto; background-color: gray;
+    margin-top: 10px;
 }
