@@ -11,13 +11,17 @@
     background-color:  rgba(163, 253, 253, 0.295);
 }
 
-.dialogsItems .active{
+.dialogsItems .activeLink   {
     color: #0000ff;
 }
 
 .dialog {
-
 }
+
+.dialog a {
+    color: rgb(36, 34, 34);
+    text-decoration: none;
+} 
 
 .messages{
     padding: 10px;
