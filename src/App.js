@@ -19,12 +19,17 @@ function App(props) {
         <Avatar />
         <Navigation />
         <div className="wrapper-content">
-          <Route path='/dialogs' render={()=><Dialogs dialogsData={props.data.dialogsData} messagesData={props.data.messagesData}/>} />
-          <Route path='/profile' render={()=><Profile posts={props.data.posts}/>}/>
-          <Route path='/news' render={()=><News/>} />
-          <Route path='/music' render={()=><Music/>} />
-          <Route path='/settings' render={()=><Settings/>} />
-
+          <Route
+            path="/dialogs"
+            render={() => <Dialogs state={props.appState.dialogsPage} />}
+          />
+          <Route
+            path="/profile"
+            render={() => <Profile state={props.appState.profilePage} />}
+          />
+          <Route path="/news" render={() => <News />} />
+          <Route path="/music" render={() => <Music />} />
+          <Route path="/settings" render={() => <Settings />} />
         </div>
         <Footer />
       </div>

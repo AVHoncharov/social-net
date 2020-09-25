@@ -4,10 +4,10 @@ import style from "./Dialogs.module.css";
 import MessageItem from "./Message/MessageItem";
 
 const Dialogs = (props) => {
-  let dialogsElements = props.dialogsData.map((dialog) => (
+  let dialogsElements = props.state.dialogsData.map((dialog) => (
     <DialogItem key={dialog.id.toString()} name={dialog.name} id={dialog.id} />
   ));
-  let messagesElements = props.messagesData.map((msg) => (
+  let messagesElements = props.state.messagesData.map((msg) => (
     <MessageItem key={msg.id.toString()} message={msg.message} id={msg.id} />
   ));
 
