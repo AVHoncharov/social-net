@@ -4,9 +4,13 @@ import { NavLink } from "react-router-dom";
 
 const Navigation = () => {
   return (
+      
     <nav className={style.navigation}>
       <div className={style.item}>
         <NavLink to="/profile" activeClassName={style.activeLink}>Profile</NavLink>
+      </div>
+      <div className={style.item}>
+        <NavLink to="/friends" activeClassName={style.activeLink}>Friends</NavLink>
       </div>
       <div className={style.item}>
         <NavLink to="/dialogs" activeClassName={style.activeLink}>Messages</NavLink>
