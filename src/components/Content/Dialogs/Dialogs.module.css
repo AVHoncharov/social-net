@@ -1,13 +1,13 @@
 .dialogs{
     display: grid;
     grid-template-columns: 2fr 10fr;
-    grid-template-rows: 1fr;
+    grid-template-rows: 1fr 150px;
 
 }
 .dialogsItems {
     padding: 10px;
     grid-column: 1;
-    grid-row: 1;
+    grid-row: 1/ span 2;
     background-color:  rgba(163, 253, 253, 0.295);
 }
 
