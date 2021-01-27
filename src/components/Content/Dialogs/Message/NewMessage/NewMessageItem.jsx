@@ -19,7 +19,8 @@ const NewMessage = (props) => {
             <div>
                 <button onClick={postMessage} className={style.addMessageButton}>post</button>
             </div>
-            <textarea ref={newMessageElement} 
+            <textarea placeholder="Enter your message"
+                ref={newMessageElement} 
                 className={style.NewMessageArea}
                 onChange={onMessagePostChange}
                 value={props.newMessageText}

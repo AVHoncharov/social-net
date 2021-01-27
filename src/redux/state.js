@@ -29,7 +29,7 @@ let store = {
             { id: 2, message: "message 2" },
             { id: 3, message: "message 3" },
         ],
-        newMessage: 'Enter message'
+        newMessage: ''
     }
     },
     sideBar: {
