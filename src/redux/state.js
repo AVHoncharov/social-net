@@ -34,29 +34,34 @@ let store = {
       ],
     },
   },
-  getState() {
-    return this._state;
-  },
+
   _callSubscriber() {
     console.log("State changed");
   },
-  addPost() {
-    let newPost = {
-      id: 5,
-      message: this._state.profilePage.newPostText,
-      likeCount: 0,
-    };
 
-    this._state.profilePage.posts.push(newPost);
-    this._state.profilePage.newPostText = "";
-    this._callSubscriber(this._state);
+  getState() {
+    return this._state;
   },
-  updateNewPostText(text) {
-    this._state.profilePage.newPostText = text;
-    this._callSubscriber(this._state);
-  },
+
   subscribe(observer) {
     this._callSubscriber = observer;
+  },
+
+  dispatch(action) { //{type: 'ADD-POST'}
+    if(action.type==='ADD-POST') {
+        let newPost = {
+            id: 5,
+            message: this._state.profilePage.newPostText,
+            likeCount: 0,
+          };
+      
+          this._state.profilePage.posts.push(newPost);
+          this._state.profilePage.newPostText = "";
+          this._callSubscriber(this._state);
+    } else if(action.type === 'UPDATE-NEW-POST-TEXT') {
+        this._state.profilePage.newPostText = action.text;
+        this._callSubscriber(this._state);
+    }
   },
 };
 
