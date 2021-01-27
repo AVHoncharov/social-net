@@ -24,11 +24,15 @@ function App(props) {
             render={() => <Profile 
                             profilePage={props.appState.profilePage}
                             dispatch={props.dispatch}
-                            />}
+                        />}
           />
           <Route
             path="/dialogs"
-            render={() => <Dialogs state={props.appState.dialogsPage} />}
+            render={() => <Dialogs 
+                            messagesData={props.appState.dialogsPage.messagesData}
+                            users={props.appState.dialogsPage.users}  
+                            dispatch={props.dispatch}
+                        />}
           />
           <Route
             path="/friends"
