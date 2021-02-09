@@ -5,7 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import store from "./redux/redux-store";
-import StoreContext, { Provider } from "./StoreContext";
+import { Provider } from "react-redux";
 
 const renderEntireTree = (state) => {
   ReactDOM.render(
@@ -17,7 +17,7 @@ const renderEntireTree = (state) => {
             // dispatch={store.dispatch.bind(store)}
             // store={store}
           />
-        </Provider>
+          </Provider>
       </BrowserRouter>
     </React.StrictMode>,
     document.getElementById("root")

@@ -7,10 +7,10 @@ import NewMessageItem from "./Message/NewMessage/NewMessageItem";
 const Dialogs = (props) => {
   let newMessageElement = React.createRef();
 
-  let dialogsElements = props.users.map((dialog) => (
+  let dialogsElements = props.dialogsPage.users.map((dialog) => (
     <DialogItem key={dialog.id.toString()} name={dialog.name} id={dialog.id} />
   ));
-  let messagesElements = props.messages.map((msg) => (
+  let messagesElements = props.dialogsPage.messagesData.messages.map((msg) => (
     <MessageItem key={msg.id.toString()} message={msg.message} id={msg.id} />
   ));
 
@@ -19,6 +19,7 @@ const Dialogs = (props) => {
   };
 
   let onMessagePostChange = () => {
+      debugger;
     let text = newMessageElement.current.value;
     props.updateMessageText(text);
   };
@@ -38,7 +39,7 @@ const Dialogs = (props) => {
           ref={newMessageElement}
           className={style.NewMessageArea}
           onChange={onMessagePostChange}
-          value={props.newMessageText}
+          value={props.dialogsPage.messagesData.newMessageText}
         />
       </div>
     </div>
