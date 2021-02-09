@@ -22,16 +22,21 @@ function App(props) {
         <div className="wrapper-content">
           <Route
             path="/profile"
-            render={() => <Profile store={props.store}
+            render={() => <Profile
+                //  store={props.store}
                         />}
           />
           <Route
             path="/dialogs"
-            render={() => <DialogsContainer store={props.store}/>}
+            render={() => <DialogsContainer 
+                // store={props.store}
+                />}
           />
           <Route
             path="/friends"
-            render={() => <Friends state={props.state.sideBar} />}
+            render={() => <Friends
+                //  state={props.state.sideBar} 
+                 />}
           />
           <Route path="/news" render={() => <News />} />
           <Route path="/music" render={() => <Music />} />
