@@ -1,5 +1,5 @@
-const ADD_MESSAGE = 'ADD-MESSAGE';
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
+const ADD_MESSAGE = "ADD-MESSAGE";
+const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
 
 let initialState = {
   users: [
@@ -21,34 +21,38 @@ let initialState = {
   },
 };
 const dialogsReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case ADD_MESSAGE: {
-            let newMessage = {
-                id: 5,
-                message: state.messagesData.newMessageText,
-            };
-        
-            let stateCopy = {...state};
+  switch (action.type) {
+    case ADD_MESSAGE: {
 
-            stateCopy.messagesData.messages.push(newMessage);
-            stateCopy.messagesData.newMessageText = "";
-
-            return stateCopy;
-        }
-
-        case UPDATE_NEW_MESSAGE_TEXT: {
-          let stateCopy = {...state};
-
-          stateCopy.messagesData.newMessageText = action.text;
-
-          return stateCopy;
-        }
-
-        default: return state;
+      return {
+        ...state,
+        messagesData: {
+          ...state.messagesData,
+          messages: [...state.messagesData.messages, {id: 5, message:state.messagesData.newMessageText }],
+          newMessageText:''
+        },
+      };
     }
-}
 
-export const addMessageActionCreator = () => ({type: ADD_MESSAGE});
-export const updateMessageTextActionCreator = (text) => ({type: UPDATE_NEW_MESSAGE_TEXT, text: text})
+    case UPDATE_NEW_MESSAGE_TEXT: {
+      return {
+        ...state,
+        messagesData: {
+          ...state.messagesData,
+          newMessageText: action.text
+        }
+      };
+    }
+
+    default:
+      return state;
+  }
+};
+
+export const addMessageActionCreator = () => ({ type: ADD_MESSAGE });
+export const updateMessageTextActionCreator = (text) => ({
+  type: UPDATE_NEW_MESSAGE_TEXT,
+  text: text,
+});
 
 export default dialogsReducer;
