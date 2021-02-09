@@ -19,3 +19,24 @@
     color: rgb(36, 34, 34);
     text-decoration: none;
 } 
+
+.NewMessage{
+    grid-column: 2;
+    grid-row:2;
+    margin: 0;
+}
+
+.NewMessageArea{
+    width: 100%; 
+    height: 100px;
+    margin: 0; 
+    padding: 0; 
+    resize:none;
+    border-width: 0; 
+}
+.addMessageButton {
+    width: 100px;
+    height:30px;
+    border-radius: 4px;    
+    margin: 5px;
+}

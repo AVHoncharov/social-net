@@ -2,16 +2,18 @@ import React from 'react';
 import { addMessageActionCreator, updateMessageTextActionCreator } from '../../../../../redux/dialogs-reducer';
 import style from "./NewMessageItem.module.css";
 
-const NewMessage = (props) => {
+const NewMessageItem = (props) => {
     let newMessageElement = React.createRef();
     
     let postMessage = ()=>{
-        props.dispatch(addMessageActionCreator());
+        props.addMessage();
+        // props.dispatch(addMessageActionCreator());
     }
 
     let onMessagePostChange = () => {
         let text = newMessageElement.current.value;
-        props.dispatch(updateMessageTextActionCreator(text));    
+        props.updateMessageText(text);
+        // props.dispatch(updateMessageTextActionCreator(text));    
     }
 
     return (
@@ -29,4 +31,4 @@ const NewMessage = (props) => {
     )
 }
 
-export default NewMessage;
+export default NewMessageItem;

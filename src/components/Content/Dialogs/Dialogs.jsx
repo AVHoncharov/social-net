@@ -2,24 +2,45 @@ import React from "react";
 import DialogItem from "./DialogItem/DialogItem";
 import style from "./Dialogs.module.css";
 import MessageItem from "./Message/MessageItem";
-import NewMessageItem from "./Message/NewMessage/NewMessageItem"
+import NewMessageItem from "./Message/NewMessage/NewMessageItem";
 
 const Dialogs = (props) => {
+  let newMessageElement = React.createRef();
+
   let dialogsElements = props.users.map((dialog) => (
     <DialogItem key={dialog.id.toString()} name={dialog.name} id={dialog.id} />
   ));
-  let messagesElements = props.messagesData.messages.map((msg) => (
+  let messagesElements = props.messages.map((msg) => (
     <MessageItem key={msg.id.toString()} message={msg.message} id={msg.id} />
   ));
+
+  let onPostMessage = () => {
+    props.postMessage();
+  };
+
+  let onMessagePostChange = () => {
+    let text = newMessageElement.current.value;
+    props.updateMessageText(text);
+  };
   
   return (
     <div className={style.dialogs}>
       <div className={style.dialogsItems}>{dialogsElements}</div>
       <div className={style.messages}>{messagesElements}</div>
-      <NewMessageItem 
-        messages={props.messagesData.messages}
-        newMessageText={props.messagesData.newMessage}
-        dispatch = {props.dispatch}/>
+      <div className={style.NewMessage}>
+        <div>
+          <button onClick={onPostMessage} className={style.addMessageButton}>
+            post
+          </button>
+        </div>
+        <textarea
+          placeholder="Enter your message"
+          ref={newMessageElement}
+          className={style.NewMessageArea}
+          onChange={onMessagePostChange}
+          value={props.newMessageText}
+        />
+      </div>
     </div>
   );
 };

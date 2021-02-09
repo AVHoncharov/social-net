@@ -11,6 +11,7 @@ import News from "./components/Content/News/News";
 import Music from "./components/Content/Music/Music";
 import Settings from "./components/Content/Settings/Settings";
 import Friends from "./components/SideBar/Friends/FriendsList";
+import DialogsContainer from "./components/Content/Dialogs/DialogsContainer";
 
 function App(props) {
   return (
@@ -21,22 +22,16 @@ function App(props) {
         <div className="wrapper-content">
           <Route
             path="/profile"
-            render={() => <Profile 
-                            profilePage={props.appState.profilePage}
-                            dispatch={props.dispatch}
+            render={() => <Profile store={props.store}
                         />}
           />
           <Route
             path="/dialogs"
-            render={() => <Dialogs 
-                            messagesData={props.appState.dialogsPage.messagesData}
-                            users={props.appState.dialogsPage.users}  
-                            dispatch={props.dispatch}
-                        />}
+            render={() => <DialogsContainer store={props.store}/>}
           />
           <Route
             path="/friends"
-            render={() => <Friends state={props.appState.sideBar} />}
+            render={() => <Friends state={props.state.sideBar} />}
           />
           <Route path="/news" render={() => <News />} />
           <Route path="/music" render={() => <Music />} />
