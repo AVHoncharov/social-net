@@ -4,18 +4,24 @@ import * as axios from "axios";
 import userDefaultAvatarSmall from "../../../assets/images/avatar-default-small.png";
 
 const UsersList = (props) => {
-  if (props.users.length === 0) {
-    axios
-      .get("https://social-network.samuraijs.com/api/1.0/users")
-      .then((response) => {
-        props.setUsers(response.data.items);
-      });
+    let getUsers = () => {
+        if (props.users.length === 0) {
+            axios
+              .get("https://social-network.samuraijs.com/api/1.0/users")
+              .then((response) => {
+                props.setUsers(response.data.items);
+              });
+        
+            // props.setUsers(users);
+          }
+    };
 
-    // props.setUsers(users);
-  }
+  
 
   return (
     <div className={style.usersList}>
+       <button onClick={getUsers}>get users</button>
+
       {props.users.map((user) => (
         <div key={user.id}>
           <span>
