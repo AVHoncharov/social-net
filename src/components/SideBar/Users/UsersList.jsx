@@ -4,19 +4,14 @@ import * as axios from "axios";
 import userDefaultAvatarSmall from "../../../assets/images/avatar-default-small.png";
 
 class UsersList extends React.Component {
-  constructor(props) {
-    super(props);
-
+  componentDidMount() {
     axios
       .get("https://social-network.samuraijs.com/api/1.0/users")
       .then((response) => {
         this.props.setUsers(response.data.items);
       });
   }
-  getUsers = () => {
-    if (this.props.users.length === 0) {
-    }
-  };
+
   render() {
     return (
       <div className={style.usersList}>
