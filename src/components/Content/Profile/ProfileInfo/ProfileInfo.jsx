@@ -1,11 +1,13 @@
 import React from "react";
 import style from "./ProfileInfo.module.css";
+import userDefaultAvatarSmall from "../../../../assets/images/avatar-default-small.png";
+
 
 const ProfileInfo = (props) => {
   return (
     <div className={style.profileInfo}>
       <div>
-        <img src="https://img.favpng.com/20/5/24/social-media-computer-icons-avatar-user-internet-png-favpng-DwdFSAXdR58nGmLe4y67jEej0.jpg" alt=""></img>
+        <img src={userDefaultAvatarSmall} alt=""></img>
       </div>
       <div className = {style.descriptionBlock}>
           ava + description
