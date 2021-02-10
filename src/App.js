@@ -5,13 +5,12 @@ import Avatar from "./components/Avatar/Avatar";
 import Navigation from "./components/SideBar/Navigation";
 import Profile from "./components/Content/Profile/Profile";
 import Footer from "./components/Footer/Footer";
-import Dialogs from "./components/Content/Dialogs/Dialogs";
 import { Route, BrowserRouter } from "react-router-dom";
 import News from "./components/Content/News/News";
 import Music from "./components/Content/Music/Music";
 import Settings from "./components/Content/Settings/Settings";
-import Friends from "./components/SideBar/Friends/FriendsList";
 import DialogsContainer from "./components/Content/Dialogs/DialogsContainer";
+import UsersListContainer from "./components/SideBar/Users/UsersListContainer";
 
 function App(props) {
   return (
@@ -33,8 +32,8 @@ function App(props) {
                 />}
           />
           <Route
-            path="/friends"
-            render={() => <Friends
+            path="/users"
+            render={() => <UsersListContainer
                 //  state={props.state.sideBar} 
                  />}
           />

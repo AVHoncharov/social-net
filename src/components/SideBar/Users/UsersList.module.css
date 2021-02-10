@@ -1,5 +1,9 @@
-.friendsList {
+.usersList {
     display: grid;
     grid-template-columns: repeat(1fr);
     grid-template-rows: repeat(1fr);
+}
+.userPhoto{
+    width: 100px;
+    height: 100px;
 }
