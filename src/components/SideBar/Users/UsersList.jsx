@@ -1,52 +1,33 @@
 import React from "react";
 import style from "./UsersList.module.css";
+import * as axios from "axios";
+import userDefaultAvatarSmall from "../../../assets/images/avatar-default-small.png";
 
 const UsersList = (props) => {
-    let users = [
-            {
-              id: 1,
-              photoUrl: 'https://img.pngio.com/avatar-icon-of-flat-style-available-in-svg-png-eps-ai-icon-png-avatar-256_256.png',
-              followed: true,
-              fullName: "Dmitriy",
-              status: "I am the Boss",
-              location: { city: "Minsk", country: "Belarus" },
-            },
-            {
-              id: 2,
-              photoUrl: 'https://img.pngio.com/avatar-icon-of-flat-style-available-in-svg-png-eps-ai-icon-png-avatar-256_256.png',
-              followed: false,
-              fullName: "Alex",
-              status: "Bu bu kaka",
-              location: { city: "Moskow", country: "Russia" },
-            },
-            {
-              id: 3,
-              photoUrl: 'https://img.pngio.com/avatar-icon-of-flat-style-available-in-svg-png-eps-ai-icon-png-avatar-256_256.png',
-              followed: true,
-              fullName: "Andrew",
-              status: "I am the status",
-              location: { city: "Pinsk", country: "Belarus" },
-            },
-            {
-              id: 4,
-              photoUrl: 'https://img.pngio.com/avatar-icon-of-flat-style-available-in-svg-png-eps-ai-icon-png-avatar-256_256.png',
-              followed: true,
-              fullName: "Petr",
-              status: "The best status in the World",
-              location: { city: "New York", country: "USA" },
-            },
-           ];
-    if(props.users.length === 0 ){
-        props.setUsers(users);
-    }
-    
+  if (props.users.length === 0) {
+    axios
+      .get("https://social-network.samuraijs.com/api/1.0/users")
+      .then((response) => {
+        props.setUsers(response.data.items);
+      });
+
+    // props.setUsers(users);
+  }
+
   return (
     <div className={style.usersList}>
       {props.users.map((user) => (
         <div key={user.id}>
           <span>
             <div>
-              <img src={user.photoUrl} className={style.userPhoto}></img>
+              <img
+                src={
+                  user.photos.small != null
+                    ? user.photos.small
+                    : userDefaultAvatarSmall
+                }
+                className={style.userPhoto}
+              ></img>
             </div>
             <div>
               {user.followed ? (
@@ -70,12 +51,12 @@ const UsersList = (props) => {
           </span>
           <span>
             <span>
-              <div>{user.fullName}</div>
+              <div>{user.name}</div>
               <div>{user.status}</div>
             </span>
             <span>
-              <div>{user.location.country}</div>
-              <div>{user.location.city}</div>
+              <div>{"user.location.country"}</div>
+              <div>{"user.location.city"}</div>
             </span>
           </span>
         </div>
