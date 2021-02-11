@@ -3,6 +3,7 @@ import style from "./UsersList.module.css";
 import userDefaultAvatarSmall from "../../../assets/images/avatar-default-small.png";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+import { followApi } from "../../../api/api";
 
 const UsersList = (props) => {
   let pagesCount = Math.ceil(props.totalCount / props.pageSize);
@@ -58,12 +59,18 @@ const UsersList = (props) => {
                             'api-key': '642dd878-8a02-409c-874f-eb31899a6794'
                           }
                          }
-                      )
-                      .then((response) => {
-                        if (response.data.resultCode == 0) {
-                          props.unfollow(user.id);
-                        }
-                      });
+                      ).then((response) => {
+                            if (response.data.resultCode == 0) {
+                              props.unfollow(user.id);
+                            }
+                          });
+                    // followApi.unfollow(user.id)
+                    //   .then((response) => {
+                    //     debugger;
+                    //     if (response.data.resultCode == 0) {
+                    //       props.unfollow(user.id);
+                    //     }
+                    //   });
                   }}
                 >
                   unfollow
@@ -80,12 +87,19 @@ const UsersList = (props) => {
                             'api-key': '642dd878-8a02-409c-874f-eb31899a6794'
                           }
                         }
-                      )
-                      .then((response) => {
-                        if (response.data.resultCode == 0) {
-                          props.follow(user.id);
-                        }
-                      });
+                      ).then((response) => {
+                            debugger;
+                            if (response.data.resultCode == 0) {
+                              props.follow(user.id);
+                            }
+                          });
+                    // followApi.follow(user.id)
+                    //   .then((response) => {
+                    //     debugger;
+                    //     if (response.data.resultCode == 0) {
+                    //       props.follow(user.id);
+                    //     }
+                    //   });
                   }}
                 >
                   follow
