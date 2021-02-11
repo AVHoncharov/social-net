@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/Header/Header";
 import Avatar from "./components/Avatar/Avatar";
 import Navigation from "./components/SideBar/Navigation";
 import Footer from "./components/Footer/Footer";
@@ -11,11 +10,12 @@ import Settings from "./components/Content/Settings/Settings";
 import DialogsContainer from "./components/Content/Dialogs/DialogsContainer";
 import UsersListContainer from "./components/SideBar/Users/UsersListContainer";
 import ProfileContainer from "./components/Content/Profile/ProfileContainer";
+import HeaderContainer from "./components/Header/HeaderContainer";
 
 function App(props) {
   return (
     <div className="wrapper">
-      <Header />
+      <HeaderContainer />
       <Avatar />
       <Navigation />
       <div className="wrapper-content">
