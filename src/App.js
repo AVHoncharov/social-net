@@ -14,35 +14,20 @@ import ProfileContainer from "./components/Content/Profile/ProfileContainer";
 
 function App(props) {
   return (
-      <div className="wrapper">
-        <Header />
-        <Avatar />
-        <Navigation />
-        <div className="wrapper-content">
-          <Route
-            path="/profile"
-            render={() => <ProfileContainer
-                //  store={props.store}
-                        />}
-          />
-          <Route
-            path="/dialogs"
-            render={() => <DialogsContainer 
-                // store={props.store}
-                />}
-          />
-          <Route
-            path="/users"
-            render={() => <UsersListContainer
-                //  state={props.state.sideBar} 
-                 />}
-          />
-          <Route path="/news" render={() => <News />} />
-          <Route path="/music" render={() => <Music />} />
-          <Route path="/settings" render={() => <Settings />} />
-        </div>
-        <Footer />
+    <div className="wrapper">
+      <Header />
+      <Avatar />
+      <Navigation />
+      <div className="wrapper-content">
+        <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
+        <Route path="/dialogs" render={() => <DialogsContainer />} />
+        <Route path="/users" render={() => <UsersListContainer />} />
+        <Route path="/news" render={() => <News />} />
+        <Route path="/music" render={() => <Music />} />
+        <Route path="/settings" render={() => <Settings />} />
       </div>
+      <Footer />
+    </div>
   );
 }
 
