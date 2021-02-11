@@ -1,34 +1,53 @@
 import React from "react";
 import { connect } from "react-redux";
-import { followAC, setUsersAC, unfollowAC, setCurrentPageAC, setTotalUsersCountAC } from "../../../redux/users-reducer";
+import {
+  followAC,
+  setUsersAC,
+  unfollowAC,
+  setCurrentPageAC,
+  setTotalUsersCountAC,
+  toogleIsFetching,
+} from "../../../redux/users-reducer";
 import UsersList from "./UsersList";
 import * as axios from "axios";
+import preloader from '../../../assets/images/loading-imdicator.gif'
+import Preloader from "../../common/Preloader/Preloader";
 
 class UserListContainer extends React.Component {
-    componentDidMount() {
-      axios
-        .get(
-          `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
-        )
-        .then((response) => {
-          this.props.setUsers(response.data.items);
-          this.props.setTotalUsersCount(response.data.totalCount);
-        });
-    }
-  
-    onPageChanged = (pageNumber) => {
-      this.props.setCurrentPage(pageNumber);
-      axios
-        .get(
-          `https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`
-        )
-        .then((response) => {
-          this.props.setUsers(response.data.items);
-        });
-    };
-  
-    render() {
-      return (
+  componentDidMount() {
+      this.props.toogleIsFetching(true);
+    axios
+      .get(
+        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
+      )
+      .then((response) => {
+          this.props.toogleIsFetching(false);
+        this.props.setUsers(response.data.items);
+        this.props.setTotalUsersCount(response.data.totalCount);
+      });
+  }
+
+  onPageChanged = (pageNumber) => {
+    this.props.setCurrentPage(pageNumber);
+    this.props.toogleIsFetching(true);
+
+    axios
+      .get(
+        `https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`
+      )
+      .then((response) => {
+        this.props.toogleIsFetching(false);
+
+        this.props.setUsers(response.data.items);
+      });
+  };
+
+  render() {
+    return (
+      <>
+      {this.props.isFetching 
+      ? <Preloader/> 
+      : null}
         <UsersList
           totalCount={this.props.totalCount}
           pageSize={this.props.pageSize}
@@ -38,16 +57,18 @@ class UserListContainer extends React.Component {
           follow={this.props.follow}
           onPageChanged={this.onPageChanged}
         />
-      );
-    }
+      </>
+    );
   }
+}
 
 let mapStateToProps = (state) => {
   return {
     users: state.usersPage.users,
     pageSize: state.usersPage.pageSize,
     totalCount: state.usersPage.totalUsersCount,
-    currentPage: state.usersPage.currentPage
+    currentPage: state.usersPage.currentPage,
+    isFetching: state.usersPage.isFetching,
   };
 };
 
@@ -57,16 +78,19 @@ let mapDispatchToProps = (dispatch) => {
       dispatch(followAC(userId));
     },
     unfollow: (userId) => {
-      dispatch(unfollowAC(userId)); 
+      dispatch(unfollowAC(userId));
     },
     setUsers: (users) => {
       dispatch(setUsersAC(users));
     },
     setCurrentPage: (page) => {
-        dispatch(setCurrentPageAC(page))
+      dispatch(setCurrentPageAC(page));
     },
-    setTotalUsersCount:(totalCount) => {
-        dispatch(setTotalUsersCountAC(totalCount));
+    setTotalUsersCount: (totalCount) => {
+      dispatch(setTotalUsersCountAC(totalCount));
+    },
+    toogleIsFetching:(isFetching) => {
+        dispatch(toogleIsFetching(isFetching));
     }
   };
 };
