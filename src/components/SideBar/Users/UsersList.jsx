@@ -50,27 +50,11 @@ const UsersList = (props) => {
               {user.followed ? (
                 <button
                   onClick={() => {
-                    axios
-                      .delete(
-                        `https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-                        { 
-                          withCredentials: true,
-                          headers: {
-                            'api-key': '642dd878-8a02-409c-874f-eb31899a6794'
-                          }
-                         }
-                      ).then((response) => {
-                            if (response.data.resultCode == 0) {
-                              props.unfollow(user.id);
-                            }
-                          });
-                    // followApi.unfollow(user.id)
-                    //   .then((response) => {
-                    //     debugger;
-                    //     if (response.data.resultCode == 0) {
-                    //       props.unfollow(user.id);
-                    //     }
-                    //   });
+                    followApi.unfollow(user.id).then((response) => {
+                      if (response.resultCode == 0) {
+                        props.unfollow(user.id);
+                      }
+                    });
                   }}
                 >
                   unfollow
@@ -78,28 +62,11 @@ const UsersList = (props) => {
               ) : (
                 <button
                   onClick={() => {
-                    axios
-                      .post(
-                        `https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-                        {},
-                        { withCredentials: true,
-                          headers: {
-                            'api-key': '642dd878-8a02-409c-874f-eb31899a6794'
-                          }
-                        }
-                      ).then((response) => {
-                            debugger;
-                            if (response.data.resultCode == 0) {
-                              props.follow(user.id);
-                            }
-                          });
-                    // followApi.follow(user.id)
-                    //   .then((response) => {
-                    //     debugger;
-                    //     if (response.data.resultCode == 0) {
-                    //       props.follow(user.id);
-                    //     }
-                    //   });
+                    followApi.follow(user.id).then((response) => {
+                      if (response.resultCode == 0) {
+                        props.follow(user.id);
+                      }
+                    });
                   }}
                 >
                   follow
