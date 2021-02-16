@@ -1,6 +1,7 @@
 import React from "react";
 import style from "./ProfileInfo.module.css";
 import userDefaultAvatarSmall from "../../../../assets/images/avatar-default-small.png";
+import ProfileStatus from "./ProfileStatus";
 
 
 const ProfileInfo = (props) => {
@@ -12,7 +13,8 @@ const ProfileInfo = (props) => {
       </div>
       <div className={style.profileDesciptionBlock}>
         <div>
-            <span>{props.profile.aboutMe}</span>
+        <span>{props.profile.aboutMe}</span>
+          <ProfileStatus  status={'Hello my friends'}/>
         </div>
         <div>
                 {Object.entries(props.profile.contacts).map((arr) => {
