@@ -2,8 +2,6 @@ import React from "react";
 import style from "./UsersList.module.css";
 import userDefaultAvatarSmall from "../../../assets/images/avatar-default-small.png";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
-import { followApi } from "../../../api/api";
 
 const UsersList = (props) => {
   let pagesCount = Math.ceil(props.totalCount / props.pageSize);
@@ -24,7 +22,9 @@ const UsersList = (props) => {
                   ? style.selectedPage
                   : style.defaultPage
               }
-              onClick={(e) => props.onPageChanged(page)}
+              onClick={(e) =>{ 
+                props.onPageChanged(page)}
+              }
             >
               {page}
             </span>
@@ -51,15 +51,7 @@ const UsersList = (props) => {
                 <button 
                 disabled ={props.followingInProgress.some(id=>id === user.id)}
                   onClick={() => {
-                      props.toogleIsFollowingProgress(true, user.id);
-
-                    followApi.unfollow(user.id).then((response) => {
-                      if (response.resultCode == 0) {
-                        props.unfollow(user.id);
-                      }
-
-                      props.toogleIsFollowingProgress(false, user.id);
-                    });
+                      props.unfollow(user.id);
                   }}
                 >
                   unfollow
@@ -68,15 +60,7 @@ const UsersList = (props) => {
                 <button
                 disabled ={props.followingInProgress.some(id=>id === user.id)}
                   onClick={() => {
-                    props.toogleIsFollowingProgress(true, user.id);
-
-                    followApi.follow(user.id).then((response) => {
-                      if (response.resultCode == 0) {
-                        props.follow(user.id);
-                      }
-                      props.toogleIsFollowingProgress(false, user.id);
-
-                    });
+                   props.follow(user.id);
                   }}
                 >
                   follow
