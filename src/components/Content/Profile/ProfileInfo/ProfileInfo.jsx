@@ -5,7 +5,6 @@ import ProfileStatus from "./ProfileStatus";
 
 
 const ProfileInfo = (props) => {
-
   return (
     <div className={style.profileInfo}>
       <div className={style.profileAvatarBlock}>
@@ -14,7 +13,7 @@ const ProfileInfo = (props) => {
       <div className={style.profileDesciptionBlock}>
         <div>
         <span>{props.profile.aboutMe}</span>
-          <ProfileStatus  status={'Hello my friends'}/>
+          <ProfileStatus  status={props.status} updateStatus={props.updateStatus}/>
         </div>
         <div>
                 {Object.entries(props.profile.contacts).map((arr) => {
