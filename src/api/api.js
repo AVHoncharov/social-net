@@ -25,6 +25,15 @@ export const usersApi = {
   },
 };
 
+export const profileApi = {
+
+  getProfile(userId =2){
+    return instance.get(
+      `profile/${userId}`)
+      .then(response => response.data)
+  }
+};
+
 export const followApi = {
   follow(userId){
     return instance.post(
@@ -40,14 +49,7 @@ export const followApi = {
 
 };
 
-export const profileApi = {
 
-  getProfile(userId =2){
-    return instance.get(
-      `profile/${userId}`)
-      .then(response => response.data)
-  }
-};
 
 
 
