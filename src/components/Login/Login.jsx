@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import { Element } from "../common/FormsControls/FormsControls";
 import { required } from './../../utils/validators/validators';
+import style from '../common/FormsControls/FormsControls.module.css'
 
 const Input = Element('input');
 
@@ -18,6 +19,9 @@ const LoginForm = (props) => {
           <div>
               <Field type="checkbox" name={'rememberMe'} component={Input}/>Remeber me
           </div>
+          {props.error && <div className={style.formSummaryError}>
+            {props.error}
+          </div>}
           <div>
               <button>Login</button>
           </div>
@@ -37,7 +41,7 @@ const Login = (props) => {
     if(props.isAuth){
         return <Redirect to={`/profile`}/>
     }
-    
+
     return(
         <div>
             <h1>Login</h1>
