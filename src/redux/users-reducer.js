@@ -1,21 +1,22 @@
 import { usersApi } from "../api/api";
-import { followApi } from './../api/api';
+import { followApi } from "./../api/api";
+import { updateObjectInArray } from './../utils/object-helpers';
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
-const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"; 
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
-const TOOGLE_IS_FETCHING = "TOOGLE_IS_FETCHING"; 
+const TOOGLE_IS_FETCHING = "TOOGLE_IS_FETCHING";
 const TOOGLE_IS_FOLLOWING_PROGRESS = "TOOGLE_IS_FOLLOWING_PROGRESS";
 
 let initialState = {
-   users: [],
-   pageSize:25,
-   totalUsersCount:0,
-   currentPage: 1,
-   isFetching: false,
-   followingInProgress: []
+  users: [],
+  pageSize: 25,
+  totalUsersCount: 0,
+  currentPage: 1,
+  isFetching: false,
+  followingInProgress: [],
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -23,24 +24,20 @@ const usersReducer = (state = initialState, action) => {
     case FOLLOW: {
       return {
         ...state,
-        users: state.users.map((user) => {
-          if (user.id === action.userId) {
-            return { ...user, followed: true };
-          }
-          return user;
-        }),
+        users: updateObjectInArray(state.users,action.userId,'id', {followed: true} )
+        //  state.users.map((user) => {
+        //   if (user.id === action.userId) {
+        //     return { ...user, followed: true };
+        //   }
+        //   return user;
+        // }),
       };
     }
 
     case UNFOLLOW: {
       return {
         ...state,
-        users: state.users.map((user) => {
-          if (user.id === action.userId) {
-            return { ...user, followed: false };
-          }
-          return user;
-        }),
+        users: updateObjectInArray(state.users,action.userId,'id', {followed: false} )
       };
     }
 
@@ -49,20 +46,21 @@ const usersReducer = (state = initialState, action) => {
     }
 
     case SET_CURRENT_PAGE: {
-        return {...state,currentPage: action.currentPage}
+      return { ...state, currentPage: action.currentPage };
     }
     case SET_TOTAL_USERS_COUNT: {
-        return {...state, totalUsersCount: action.totalCount}
+      return { ...state, totalUsersCount: action.totalCount };
     }
     case TOOGLE_IS_FETCHING: {
-        return {...state, isFetching: action.isFetching}
+      return { ...state, isFetching: action.isFetching };
     }
     case TOOGLE_IS_FOLLOWING_PROGRESS: {
-        return {...state, 
-            followingInProgress: action.followingInProgress
-            ? [...state.followingInProgress, action.userId]
-            : state.followingInProgress.filter(id=> id != action.userId)
-        }
+      return {
+        ...state,
+        followingInProgress: action.followingInProgress
+          ? [...state.followingInProgress, action.userId]
+          : state.followingInProgress.filter((id) => id != action.userId),
+      };
     }
     default:
       return state;
@@ -72,51 +70,65 @@ const usersReducer = (state = initialState, action) => {
 export const followSuccess = (userId) => ({ type: FOLLOW, userId });
 export const unfollowSuccess = (userId) => ({ type: UNFOLLOW, userId });
 export const setUsers = (users) => ({ type: SET_USERS, users });
-export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
-export const setTotalUsersCount = (totalCount) => ({type: SET_TOTAL_USERS_COUNT, totalCount});
-export const toogleIsFetching = (isFetching) => ({type: TOOGLE_IS_FETCHING, isFetching});
-export const toogleIsFollowingProgress = (followingInProgress, userId) => ({type: TOOGLE_IS_FOLLOWING_PROGRESS, followingInProgress, userId});
-
-
-
+export const setCurrentPage = (currentPage) => ({
+  type: SET_CURRENT_PAGE,
+  currentPage,
+});
+export const setTotalUsersCount = (totalCount) => ({
+  type: SET_TOTAL_USERS_COUNT,
+  totalCount,
+});
+export const toogleIsFetching = (isFetching) => ({
+  type: TOOGLE_IS_FETCHING,
+  isFetching,
+});
+export const toogleIsFollowingProgress = (followingInProgress, userId) => ({
+  type: TOOGLE_IS_FOLLOWING_PROGRESS,
+  followingInProgress,
+  userId,
+});
 
 export const requestUsers = (page, pageSize) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(toogleIsFetching(true));
-    usersApi.getUsers(page, pageSize).then((data) => {
-      dispatch(toogleIsFetching(false));
-      dispatch(setUsers(data.items));
-      dispatch(setTotalUsersCount(data.totalCount));
-    });
+
+    let data = await usersApi.getUsers(page, pageSize);
+    dispatch(toogleIsFetching(false));
+    dispatch(setUsers(data.items));
+    dispatch(setTotalUsersCount(data.totalCount));
+  };
+};
+
+const followUnfollowFlow = async (
+  dispatch,
+  userId,
+  apiMethod,
+  actionCreator
+) => {
+  dispatch(toogleIsFollowingProgress(true, userId));
+
+  let response = await apiMethod(userId);
+
+  if (response.resultCode == 0) {
+    dispatch(actionCreator(userId));
   }
-} 
+  dispatch(toogleIsFollowingProgress(false, userId));
+};
 
 export const follow = (userId) => {
-  return (dispatch) => {
-    dispatch(toogleIsFollowingProgress(true, userId));
+  return async (dispatch) => {
+    let apiMethod = followApi.follow.bind(usersApi);
 
-    followApi.follow(userId).then((response) => {
-      if (response.resultCode == 0) {
-        dispatch(followSuccess(userId));
-      }
-      dispatch(toogleIsFollowingProgress(false, userId));
-
-    });
-  }
-} 
+    followUnfollowFlow(dispatch, userId, apiMethod, followSuccess);
+  };
+};
 
 export const unfollow = (userId) => {
-  return (dispatch) => {
-    dispatch(toogleIsFollowingProgress(true, userId));
+  return async (dispatch) => {
+    let apiMethod = followApi.unfollow.bind(usersApi);
 
-    followApi.unfollow(userId).then((response) => {
-      if (response.resultCode == 0) {
-        dispatch(unfollowSuccess(userId));
-      }
-      dispatch(toogleIsFollowingProgress(false, userId));
-
-    });
-  }
-} 
+    followUnfollowFlow(dispatch, userId, apiMethod, unfollowSuccess);
+  };
+};
 
 export default usersReducer;

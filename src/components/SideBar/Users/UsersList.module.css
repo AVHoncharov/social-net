@@ -3,16 +3,4 @@
     grid-template-columns: repeat(1fr);
     grid-template-rows: repeat(1fr);
 }
-.userPhoto{
-    width: 100px;
-    height: 100px;
-}
-.selectedPage{
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 25px;
-}
-.defaultPage {
-    cursor: pointer;
-    padding: 5px;
-}
+
