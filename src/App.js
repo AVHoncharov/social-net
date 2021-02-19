@@ -3,7 +3,7 @@ import "./App.css";
 import Avatar from "./components/Avatar/Avatar";
 import Navigation from "./components/SideBar/Navigation";
 import Footer from "./components/Footer/Footer";
-import { Route, BrowserRouter, withRouter } from "react-router-dom";
+import { Route, BrowserRouter, withRouter, HashRouter } from "react-router-dom";
 import News from "./components/Content/News/News";
 import Music from "./components/Content/Music/Music";
 import Settings from "./components/Content/Settings/Settings";
@@ -67,7 +67,7 @@ let AppContainer = compose(
 const MainApp = (props) => {
   return (
     <React.StrictMode>
-      <BrowserRouter>
+      <HashRouter>
         <Provider store={store}>
           <AppContainer
           // state={state}
@@ -75,7 +75,7 @@ const MainApp = (props) => {
           // store={store}
           />
         </Provider>
-      </BrowserRouter>
+      </HashRouter>
     </React.StrictMode>
   );
 };
