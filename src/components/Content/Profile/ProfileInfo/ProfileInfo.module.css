@@ -28,3 +28,12 @@
     display: block;
     object-fit: cover;
   }
+  .profielAvatarImg.selfProfile {
+    cursor: pointer;
+  }
+
+  .inputAvatarPhotoTag{
+      display: none;
+  }
+
+  
