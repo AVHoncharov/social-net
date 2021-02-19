@@ -12,18 +12,17 @@ import UsersListContainer from "./components/SideBar/Users/UsersListContainer";
 import ProfileContainer from "./components/Content/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LoginContainer from "./components/Login/LoginContainer";
-import { connect } from "react-redux";
+import { connect, Provider } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
-import { compose } from 'redux';
-
+import { compose } from "redux";
+import store from "./redux/redux-store";
 
 class App extends React.Component {
   componentDidMount() {
-     this.props.initializeApp();
+    this.props.initializeApp();
   }
 
   render() {
-
     return (
       <div className="wrapper">
         <HeaderContainer />
@@ -45,9 +44,27 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  initialized: state.app.initialized
-})
-export default compose(
+  initialized: state.app.initialized,
+});
+let AppContainer = compose(
   withRouter,
-  connect(mapStateToProps, { initializeApp }))(App);
+  connect(mapStateToProps, { initializeApp })
+)(App);
 
+const MainApp = (props) => {
+  return (
+    <React.StrictMode>
+      <BrowserRouter>
+        <Provider store={store}>
+          <AppContainer
+          // state={state}
+          // dispatch={store.dispatch.bind(store)}
+          // store={store}
+          />
+        </Provider>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+};
+
+export default MainApp;
