@@ -66,8 +66,7 @@ let AppContainer = compose(
 
 const MainApp = (props) => {
   return (
-    <React.StrictMode>
-      <HashRouter>
+     <HashRouter>
         <Provider store={store}>
           <AppContainer
           // state={state}
@@ -76,7 +75,6 @@ const MainApp = (props) => {
           />
         </Provider>
       </HashRouter>
-    </React.StrictMode>
   );
 };
 

@@ -1,5 +1,5 @@
 .profile{
     display: grid;
     grid-template-columns: 300px auto;
-    grid-template-rows: 300px 100px auto;
+    grid-template-rows: 300px auto auto;
 }

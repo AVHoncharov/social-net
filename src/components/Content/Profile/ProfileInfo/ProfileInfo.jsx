@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./ProfileInfo.module.css";
 import userDefaultAvatarSmall from "../../../../assets/images/avatar-default-small.png";
 import ProfileStatus from "./ProfileStatus";
+import ProfileCommonInfoForm from "./ProfileCommonInfoForm";
+import ProfileCommonInfoReduxForm from "./ProfileCommonInfoForm";
+import ProfileContactsReduxForm from "./ProfileContactsForm";
 
 const ProfileInfo = (props) => {
+  const [editMode, setEditMode] = useState(false);
+  const [editContactsMode, setEditContactsMode] = useState(false);
 
   const onMainPhotoSelected = (e) => {
-    if(e.target.files.length)
-      props.savePhoto(e.target.files[0])
-  }
+    if (e.currentTarget.files.length) props.savePhoto(e.currentTarget.files[0]);
+  };
+
+  const onProfileCommonInfoSubmit = (formData) => {
+    props.saveProfile(formData);
+    setEditMode(false);
+  };
+  const onProfileContactsSubmit = (formData) => {
+    formData = {
+      ...formData,
+      ...{
+        fullName: props.profile.fullName,
+        aboutMe: props.profile.aboutMe,
+        lookingForAJob: props.profile.lookingForAJob,
+        lookingForAJobDescription: props.profile.lookingForAJobDescription,
+      },
+    };
+    props.saveProfile(formData).then(() => {
+      setEditContactsMode(false);
+    });
+  };
   return (
     <div className={style.profileInfo}>
       <div className={style.profileAvatarBlock}>
@@ -41,23 +64,82 @@ const ProfileInfo = (props) => {
             updateStatus={props.updateStatus}
           />
         </div>
-        <div>
-          {Object.entries(props.profile.contacts).map((arr) => {
-            return (
-              <p>
-                <b>{arr[0]}:</b> {arr[1]}
-              </p>
-            );
-          })}
+        <br />
+        <div
+          onDoubleClick={() => setEditContactsMode(true)}
+          className={style.contactsList}
+        >
+          Contacts:
+          {editContactsMode ? (
+            <ProfileContactsReduxForm
+              initialValues={props.profile}
+              profile={props.profile}
+              onSubmit={onProfileContactsSubmit}
+            />
+          ) : (
+            Object.entries(props.profile.contacts).map((contact) => {
+              return (
+                <Contacts
+                  key={contact[0]}
+                  contactTitle={contact[0]}
+                  contactValue={contact[1]}
+                />
+              );
+            })
+          )}
         </div>
       </div>
       <div className={style.profileCommonInfoBlock}>
-        <div>
-          <span style={{ padding: "25px" }}>
-            <b>{props.profile.fullName.toUpperCase()}</b>
-          </span>
-        </div>
+        {editMode ? (
+          <ProfileCommonInfoForm
+            initialValues={props.profile}
+            profile={props.profile}
+            onSubmit={onProfileCommonInfoSubmit}
+          />
+        ) : (
+          <ProfileCommonInfo
+            profile={props.profile}
+            isOwner={props.isOwner}
+            turnOnEditMode={() => setEditMode(true)}
+          />
+        )}
       </div>
+    </div>
+  );
+};
+
+const ProfileCommonInfo = ({ profile, isOwner, turnOnEditMode }) => {
+  return (
+    <div>
+      {isOwner && (
+        <div>
+          <button onClick={turnOnEditMode}>edit</button>
+        </div>
+      )}
+      <div>
+        <span>
+          <b>{profile.fullName.toUpperCase()}</b>
+        </span>
+      </div>
+      <div>
+        <b>Looking for a job</b>: {profile.lookingForAJob ? "Yes" : "No"}
+      </div>
+      {profile.lookingForAJob && (
+        <div>
+          <b>My professional scills</b>: {profile.lookingForAJobDescription}
+        </div>
+      )}
+      <div>
+        <b>About me</b>: {profile.aboutMe}
+      </div>
+    </div>
+  );
+};
+
+const Contacts = ({ contactTitle, contactValue }) => {
+  return (
+    <div>
+      <b>{contactTitle} :</b> {contactValue}
     </div>
   );
 };
