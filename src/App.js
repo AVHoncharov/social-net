@@ -5,7 +5,7 @@ import Navigation from "./components/SideBar/Navigation";
 import Footer from "./components/Footer/Footer";
 import { Route, BrowserRouter, withRouter, HashRouter } from "react-router-dom";
 import News from "./components/Content/News/News";
-import Music from "./components/Content/Music/Music";
+import Music from "./components/Content/Music/Music.tsx";
 import Settings from "./components/Content/Settings/Settings";
 import UsersListContainer from "./components/SideBar/Users/UsersListContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -14,15 +14,12 @@ import { connect, Provider } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
 import { compose } from "redux";
 import store from "./redux/redux-store";
-import { withSuspense } from './hoc/WithSuspense';
+import { withSuspense } from "./hoc/WithSuspense";
+import ProfileContainer from "./components/Content/Profile/ProfileContainer";
 
 const DialogsContainer = React.lazy(() =>
   import("./components/Content/Dialogs/DialogsContainer")
 );
-const ProfileContainer = React.lazy(() =>
-  import("./components/Content/Profile/ProfileContainer")
-);
-
 
 class App extends React.Component {
   componentDidMount() {
@@ -36,15 +33,13 @@ class App extends React.Component {
         <Avatar />
         <Navigation />
         <div className="wrapper-content">
+          <Route path="/profile/:userId?" render ={()=><ProfileContainer/>}/>
+
+          <Route path="/dialogs" render={withSuspense(DialogsContainer)} />
           <Route
-            path="/profile/:userId?"
-            render={withSuspense(ProfileContainer)}
+            path="/users"
+            render={() => <UsersListContainer pageTitle={"User List"} />}
           />
-          <Route
-            path="/dialogs"
-            render={withSuspense(DialogsContainer)}
-          />
-          <Route path="/users" render={() => <UsersListContainer />} />
           <Route path="/news" render={() => <News />} />
           <Route path="/music" render={() => <Music />} />
           <Route path="/settings" render={() => <Settings />} />
@@ -66,15 +61,15 @@ let AppContainer = compose(
 
 const MainApp = (props) => {
   return (
-     <HashRouter>
-        <Provider store={store}>
-          <AppContainer
-          // state={state}
-          // dispatch={store.dispatch.bind(store)}
-          // store={store}
-          />
-        </Provider>
-      </HashRouter>
+    <HashRouter>
+      <Provider store={store}>
+        <AppContainer
+        // state={state}
+        // dispatch={store.dispatch.bind(store)}
+        // store={store}
+        />
+      </Provider>
+    </HashRouter>
   );
 };
 

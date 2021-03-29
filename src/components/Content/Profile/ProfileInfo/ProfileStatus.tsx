@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
-import style from "./ProfileStatus.module";
+import React, { ChangeEvent, ChangeEventHandler, FC, useEffect, useState } from "react";
 
-const ProfileStatus = (props) => {
+type ProfileStatusType = {
+  statusText: string,
+  editMode: boolean
+  updateStatus: (status: string) => void
+}
+
+const ProfileStatus: FC<ProfileStatusType> = ({statusText, ...props}) => {
   let [editMode, setEditMode] = useState(false);
-  let [status, setStatus] = useState(props.status);
+  let [status, setStatus] = useState<string>(statusText);
 
   useEffect(()=>{
-    setStatus(props.status);
-  },[props.status]);
+    setStatus(status);
+  },[status]);
 
   const activateEditMode = () => {
     setEditMode(true);
@@ -18,7 +23,7 @@ const ProfileStatus = (props) => {
     props.updateStatus(status);
   };
 
-  const onStatusChange = (e) => {
+  const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
     setStatus(e.currentTarget.value);
   };
 
@@ -27,7 +32,7 @@ const ProfileStatus = (props) => {
       {!editMode && (
         <div>
           <span onDoubleClick={activateEditMode}>
-            {props.status || "------"}
+            {status || "------"}
           </span>
         </div>
       )}

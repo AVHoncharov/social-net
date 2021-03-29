@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import { createField, Element } from "../common/FormsControls/FormsControls";
-import { required } from './../../utils/validators/validators';
+import { required } from '../../utils/validators/validators';
 import style from '../common/FormsControls/FormsControls.module.css'
 
 const Input = Element('input');

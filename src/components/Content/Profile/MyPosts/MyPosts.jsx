@@ -10,7 +10,7 @@ import { Element } from "./../../../common/FormsControls/FormsControls";
 
 const MyPosts = React.memo((props) => {
   let postsElements = props.profilePage.posts.map((p) => (
-    <Post id={p.id} message={p.message} likeCount={p.likeCount} />
+    <Post key={p.id} id={p.id} message={p.message} likeCount={p.likeCount} />
   ));
 
   let onAddNewPost = (data) => {

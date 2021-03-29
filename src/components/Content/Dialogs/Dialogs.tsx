@@ -1,22 +1,27 @@
-import React from "react";
-import { Field, reduxForm } from "redux-form";
+import React, { FC } from "react";
 import DialogItem from "./DialogItem/DialogItem";
 import style from "./Dialogs.module.css";
 import MessageItem from "./Message/MessageItem";
 import { maxLengthCreator, required } from './../../../utils/validators/validators';
 import AddMessageFrom from "./Message/AddMessageForm/AddMessageForm";
+import { MessageType, UsersType } from "../../../redux/dialogs-reducer";
 
-const Dialogs = (props) => {
-  let newMessageElement = React.createRef();
+type DialogsType= {
+  users: Array<UsersType>,
+  messages: Array<MessageType>,
+  postMessage:(newMessageBody: string) => void
+}
 
-  let dialogsElements = props.dialogsPage.users.map((dialog) => (
+const Dialogs: FC<DialogsType> = ({users, messages, ...props}) => {
+
+  let dialogsElements = users.map((dialog) => (
     <DialogItem key={dialog.id.toString()} name={dialog.name} id={dialog.id} />
   ));
-  let messagesElements = props.dialogsPage.messagesData.messages.map((msg) => (
+  let messagesElements = messages.map((msg) => (
     <MessageItem key={msg.id.toString()} message={msg.message} id={msg.id} />
   ));
 
-  let addNewMessage = (data) => {
+  let addNewMessage = (data:any) => {
     props.postMessage(data.newMessageBody);
   };
 

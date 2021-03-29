@@ -35,7 +35,7 @@ const ProfileInfo = (props) => {
   return (
     <div className={style.profileInfo}>
       <div className={style.profileAvatarBlock}>
-        <label for="input-avatar-profile-photo">
+        <label htmlFor="input-avatar-profile-photo">
           <img
             src={props.profile.photos.large || userDefaultAvatarSmall}
             alt=""
@@ -60,7 +60,7 @@ const ProfileInfo = (props) => {
         <div>
           <span>{props.profile.aboutMe}</span>
           <ProfileStatus
-            status={props.status}
+            statusText={props.status}
             updateStatus={props.updateStatus}
           />
         </div>
