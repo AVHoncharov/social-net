@@ -14,7 +14,10 @@ import { connect, Provider } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
 import { compose } from "redux";
 import store from "./redux/redux-store";
-import { withSuspense } from './hoc/WithSuspense';
+import { withSuspense } from "./hoc/WithSuspense";
+import Preloader from "./components/common/Preloader/Preloader";
+import { Switch } from "react-router";
+import { Redirect } from "react-router";
 
 const DialogsContainer = React.lazy(() =>
   import("./components/Content/Dialogs/DialogsContainer")
@@ -23,33 +26,39 @@ const ProfileContainer = React.lazy(() =>
   import("./components/Content/Profile/ProfileContainer")
 );
 
-
 class App extends React.Component {
   componentDidMount() {
     this.props.initializeApp();
   }
 
   render() {
+    if (!this.props.initialized) {
+      return <Preloader />;
+    }
+
     return (
       <div className="wrapper">
         <HeaderContainer />
         <Avatar />
         <Navigation />
         <div className="wrapper-content">
-          <Route
-            path="/profile/:userId?"
-            render={withSuspense(ProfileContainer)}
-          />
-          <Route
-            path="/dialogs"
-            render={withSuspense(DialogsContainer)}
-          />
-          <Route path="/users" render={() => <UsersListContainer />} />
-          <Route path="/news" render={() => <News />} />
-          <Route path="/music" render={() => <Music />} />
-          <Route path="/settings" render={() => <Settings />} />
-          <Route path="/login" render={() => <LoginContainer />} />
+          <Switch>
+            <Redirect exact from="/" to="/profile" />
+            <Route
+              path="/profile/:userId?"
+              render={withSuspense(ProfileContainer)}
+            />
+            <Route path="/dialogs" render={withSuspense(DialogsContainer)} />
+            <Route path="/users" render={() => <UsersListContainer />} />
+            <Route path="/news" render={() => <News />} />
+            <Route path="/music" render={() => <Music />} />
+            <Route path="/settings" render={() => <Settings />} />
+            <Route path="/login" render={() => <LoginContainer />} />
+
+            <Route path="*" render={() => <div>404 NOT FOUND</div>} />
+          </Switch>
         </div>
+
         <Footer />
       </div>
     );
@@ -66,15 +75,15 @@ let AppContainer = compose(
 
 const MainApp = (props) => {
   return (
-     <HashRouter>
-        <Provider store={store}>
-          <AppContainer
-          // state={state}
-          // dispatch={store.dispatch.bind(store)}
-          // store={store}
-          />
-        </Provider>
-      </HashRouter>
+    <BrowserRouter>
+      <Provider store={store}>
+        <AppContainer
+        // state={state}
+        // dispatch={store.dispatch.bind(store)}
+        // store={store}
+        />
+      </Provider>
+    </BrowserRouter>
   );
 };
 
