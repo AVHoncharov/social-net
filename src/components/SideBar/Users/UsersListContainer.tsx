@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { follow, unfollow, setCurrentPage } from "../../../redux/users-reducer";
+import { follow, unfollow, actions } from "../../../redux/users-reducer";
 import UsersList from "./UsersList";
 import Preloader from "../../common/Preloader/Preloader";
 import { requestUsers } from "../../../redux/users-reducer";
@@ -87,7 +87,7 @@ export default compose(
       follow,
       unfollow,
       requestUsers,
-      setCurrentPage
+      setCurrentPage: actions.setCurrentPage
     }
   )
 )(UserListContainer);
