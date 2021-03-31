@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import { ThunkAction } from "redux-thunk";
-import { usersApi } from "../api/api";
+import { ResultCode, usersApi } from "../api/api";
 import { followApi } from "../api/api";
 import { UserType } from "../types/types";
 import { updateObjectInArray } from "../utils/object-helpers";
@@ -24,6 +24,15 @@ let initialState = {
 };
 
 export type InitialStateType = typeof initialState;
+
+type ActionTypes =
+  | FollowSuccessActionType
+  | UnfollowSuccessActionType
+  | SetUsersActionType
+  | SetCurrentPageActionCreator
+  | SetTotalUsersCountActionType
+  | ToogleIsFetchingActioType
+  | ToogleIsFollowingProgressActionType;
 
 const usersReducer = (
   state = initialState,
@@ -79,15 +88,6 @@ const usersReducer = (
       return state;
   }
 };
-
-type ActionTypes =
-  | FollowSuccessActionType
-  | UnfollowSuccessActionType
-  | SetUsersActionType
-  | SetCurrentPageActionCreator
-  | SetTotalUsersCountActionType
-  | ToogleIsFetchingActioType
-  | ToogleIsFollowingProgressActionType;
 
 type FollowSuccessActionType = {
   type: typeof FOLLOW;
@@ -190,7 +190,7 @@ const _followUnfollowFlow = async (
 
   let response = await apiMethod(userId);
 
-  if (response.resultCode == 0) {
+  if (response.resultCode == ResultCode.Success) {
     dispatch(actionCreator(userId));
   }
   dispatch(toogleIsFollowingProgress(false, userId));

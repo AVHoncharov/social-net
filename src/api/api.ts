@@ -11,34 +11,50 @@ const instance = axios.create({
 
 export enum ResultCode {
   Success = 0,
-  Error = 1
+  Error = 1,
+}
+
+export enum ResultCodeForCaptcha {
+  CaptchaIsRequired = 10,
 }
 
 type AuthMeResponseType = {
   data: {
-    id: number,
-    email: string, 
-    login: string
-  },
-  resultCode: number,
-  messages: Array<string>
-}
+    id: number;
+    email: string;
+    login: string;
+  };
+  resultCode: number;
+  messages: Array<string>;
+};
 
 type LoginMeResponseType = {
   data: {
-    userId: number,
-  },
-  resultCode: number,
-  messages: Array<string>
-}
+    userId: number;
+  };
+  resultCode: ResultCode | ResultCodeForCaptcha;
+  messages: Array<string>;
+};
 
 export const authApi = {
   authMe() {
-    return instance.get<AuthMeResponseType>(`auth/me`).then(res=> res.data);
+    return instance.get<AuthMeResponseType>(`auth/me`).then((res) => res.data);
   },
 
-  login(email: string, password: string, rememberMe: boolean = false) {
-    return instance.post<LoginMeResponseType>(`auth/login`, { email, password, rememberMe });
+  login(
+    email: string,
+    password: string,
+    rememberMe: boolean = false,
+    captcha: null | string
+  ) {
+    return instance
+      .post<LoginMeResponseType>(`auth/login`, {
+        email,
+        password,
+        rememberMe,
+        captcha,
+      })
+      .then((res) => res.data);
   },
 
   logout() {
@@ -67,7 +83,7 @@ export const profileApi = {
     return instance.put(`profile/status`, { status: statusText });
   },
 
-  saveProfile(profile: ProfileType){
+  saveProfile(profile: ProfileType) {
     return instance.put(`profile`, profile);
   },
 
@@ -76,10 +92,10 @@ export const profileApi = {
     formData.append("image", photoFile);
     return instance.put(`profile/photo`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-  }
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
 };
 
 export const followApi = {
@@ -96,3 +112,8 @@ export const followApi = {
   },
 };
 
+export const securityAPI = {
+  getCaptchaUrl() {
+    return instance.get("security/get-captcha-url");
+  },
+};
