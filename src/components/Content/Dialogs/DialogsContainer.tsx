@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  addMessageActionCreator, MessageType, UsersType,
+    actions,
+  MessageType, UsersType,
   
 } from "../../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
@@ -27,7 +28,7 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
 
 let mapDispatchToProps = (dispatch: any) => {
     return {
-        postMessage: (newMessageBody: string)=>{dispatch(addMessageActionCreator(newMessageBody));}
+        postMessage: (newMessageBody: string)=>{dispatch(actions.addMessageActionCreator(newMessageBody));}
     }
 }
 
