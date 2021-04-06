@@ -1,53 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import style from "./ProfileInfo.module.css";
 import userDefaultAvatarSmall from "../../../../assets/images/avatar-default-small.png";
 import ProfileStatus from "./ProfileStatus";
 import ProfileCommonInfoForm from "./ProfileCommonInfoForm";
 import ProfileCommonInfoReduxForm from "./ProfileCommonInfoForm";
 import ProfileContactsReduxForm from "./ProfileContactsForm";
+import { ProfileType } from "../../../../types/types";
 
-const ProfileInfo = (props) => {
+type PofileInfoPropsType = {
+  profile: ProfileType,
+  isOwner: boolean,
+  status: string,
+  updateStatus: (status: string) => void
+  savePhoto: (file: File) => void
+  saveProfile: (profile: ProfileType) => Promise<any>
+}
+const ProfileInfo: React.FC<PofileInfoPropsType> = ({profile,isOwner, status,updateStatus,savePhoto,saveProfile}) => {
   const [editMode, setEditMode] = useState(false);
   const [editContactsMode, setEditContactsMode] = useState(false);
 
-  const onMainPhotoSelected = (e) => {
-    if (e.currentTarget.files.length) props.savePhoto(e.currentTarget.files[0]);
+  ///update profile only if it's new
+  const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files?.length) savePhoto(e.currentTarget.files[0]);
   };
 
-  const onProfileCommonInfoSubmit = (formData) => {
-    props.saveProfile(formData);
+  const onProfileCommonInfoSubmit = (formData: ProfileType) => {
+    saveProfile(formData);
     setEditMode(false);
   };
-  const onProfileContactsSubmit = (formData) => {
-    formData = {
-      ...formData,
-      ...{
-        fullName: props.profile.fullName,
-        aboutMe: props.profile.aboutMe,
-        lookingForAJob: props.profile.lookingForAJob,
-        lookingForAJobDescription: props.profile.lookingForAJobDescription,
-      },
-    };
-    props.saveProfile(formData).then(() => {
-      setEditContactsMode(false);
-    });
+
+  const onProfileContactsSubmit = (formData: ProfileType ) => {
+    if(!profile) {
+      console.error('There is no Profile')
+    } else {
+      formData = {
+        ...formData,
+        ...{
+          fullName: profile.fullName,
+          aboutMe: profile.aboutMe,
+          lookingForAJob: profile.lookingForAJob,
+          lookingForAJobDescription: profile.lookingForAJobDescription,
+        },
+      };
+      //todo: remove Then
+      saveProfile(formData).then(() => {
+        setEditContactsMode(false);
+      });
+    }
   };
+
   return (
     <div className={style.profileInfo}>
       <div className={style.profileAvatarBlock}>
         <label htmlFor="input-avatar-profile-photo">
           <img
-            src={props.profile.photos.large || userDefaultAvatarSmall}
+            src={profile.photos.large || userDefaultAvatarSmall}
             alt=""
             className={
-              props.isOwner
+              isOwner
                 ? style.profielAvatarImg + " " + style.selfProfile
                 : style.profielAvatarImg
             }
-            title={props.isOwner && "Нажмите на фото для выбора нового"}
+            title={isOwner ? "Нажмите на фото для выбора нового" : ''}
           ></img>
         </label>
-        {props.isOwner && (
+        {isOwner && (
           <input
             id="input-avatar-profile-photo"
             type={"file"}
@@ -58,10 +75,11 @@ const ProfileInfo = (props) => {
       </div>
       <div className={style.profileDesciptionBlock}>
         <div>
-          <span>{props.profile.aboutMe}</span>
+          <span>{profile.aboutMe}</span>
           <ProfileStatus
-            statusText={props.status}
-            updateStatus={props.updateStatus}
+            statusText={status}
+            updateStatus={updateStatus}
+            isOwner={isOwner}
           />
         </div>
         <br />
@@ -72,12 +90,12 @@ const ProfileInfo = (props) => {
           Contacts:
           {editContactsMode ? (
             <ProfileContactsReduxForm
-              initialValues={props.profile}
-              profile={props.profile}
+              initialValues={profile}
+              profile={profile}
               onSubmit={onProfileContactsSubmit}
             />
           ) : (
-            Object.entries(props.profile.contacts).map((contact) => {
+            Object.entries(profile.contacts).map((contact) => {
               return (
                 <Contacts
                   key={contact[0]}
@@ -92,14 +110,14 @@ const ProfileInfo = (props) => {
       <div className={style.profileCommonInfoBlock}>
         {editMode ? (
           <ProfileCommonInfoForm
-            initialValues={props.profile}
-            profile={props.profile}
+            initialValues={profile}
+            profile={profile}
             onSubmit={onProfileCommonInfoSubmit}
           />
         ) : (
           <ProfileCommonInfo
-            profile={props.profile}
-            isOwner={props.isOwner}
+            profile={profile}
+            isOwner={isOwner}
             turnOnEditMode={() => setEditMode(true)}
           />
         )}
@@ -108,7 +126,13 @@ const ProfileInfo = (props) => {
   );
 };
 
-const ProfileCommonInfo = ({ profile, isOwner, turnOnEditMode }) => {
+type ProfileCommonInfoPropsType = {
+  profile: ProfileType,
+  isOwner: boolean,
+  turnOnEditMode: () => void
+}
+
+const ProfileCommonInfo: React.FC<ProfileCommonInfoPropsType> = ({ profile, isOwner, turnOnEditMode }) => {
   return (
     <div>
       {isOwner && (
@@ -136,7 +160,11 @@ const ProfileCommonInfo = ({ profile, isOwner, turnOnEditMode }) => {
   );
 };
 
-const Contacts = ({ contactTitle, contactValue }) => {
+type ContactsPropsType = {
+  contactTitle: string,
+  contactValue: string
+}
+const Contacts: React.FC<ContactsPropsType> = ({ contactTitle, contactValue }) => {
   return (
     <div>
       <b>{contactTitle} :</b> {contactValue}

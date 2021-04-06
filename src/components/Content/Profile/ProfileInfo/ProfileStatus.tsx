@@ -1,18 +1,28 @@
-import React, { ChangeEvent, ChangeEventHandler, FC, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  FC,
+  useEffect,
+  useState,
+} from "react";
 
 type ProfileStatusType = {
-  statusText: string,
-  editMode: boolean
-  updateStatus: (status: string) => void
-}
+  statusText: string;
+  isOwner: boolean;
+  updateStatus: (status: string) => void;
+};
 
-const ProfileStatus: FC<ProfileStatusType> = ({statusText, ...props}) => {
+const ProfileStatus: FC<ProfileStatusType> = ({
+  statusText,
+  isOwner,
+  ...props
+}) => {
   let [editMode, setEditMode] = useState(false);
   let [status, setStatus] = useState<string>(statusText);
 
-  useEffect(()=>{
-    setStatus(status);
-  },[status]);
+  useEffect(() => {
+    setStatus(statusText);
+  }, [statusText]);
 
   const activateEditMode = () => {
     setEditMode(true);
@@ -29,23 +39,27 @@ const ProfileStatus: FC<ProfileStatusType> = ({statusText, ...props}) => {
 
   return (
     <div>
-      {!editMode && (
+      {isOwner ? (
         <div>
-          <span onDoubleClick={activateEditMode}>
-            {status || "------"}
-          </span>
-        </div>
-      )}
+          {!editMode && (
+            <div>
+              <span onDoubleClick={activateEditMode}>{status || "------"}</span>
+            </div>
+          )}
 
-      {editMode && (
-        <div>
-          <input
-            onChange={onStatusChange}
-            onBlur={deactivateEditMode}
-            autoFocus={true}
-            value={status}
-          ></input>
+          {editMode && (
+            <div>
+              <input
+                onChange={onStatusChange}
+                onBlur={deactivateEditMode}
+                autoFocus={true}
+                value={status}
+              ></input>
+            </div>
+          )}
         </div>
+      ) : (
+        status || "no status"
       )}
     </div>
   );

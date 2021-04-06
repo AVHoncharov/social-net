@@ -4,6 +4,7 @@ import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import {
   createField,
   Element,
+  GetStringKeys,
 } from "../common/FormsControls/FormsControls";
 import { required } from "../../utils/validators/validators";
 import style from "../common/FormsControls/FormsControls.module.css";
@@ -24,16 +25,14 @@ const LoginForm: React.FC<
     <form onSubmit={handleSubmit}>
       {createField<LoginFromVapluesTypeKeys>("Email", "email", [required], Input)}
       {/* <Field placeholder={'Email'} name={'email'} component={Input} validate={[required]}/> */}
-      {createField<LoginFromVapluesTypeKeys>("Password", "password", [required], Input, {
-        type: "password",
-      })}
+      {createField<LoginFromVapluesTypeKeys>("Password", "password", [required], Input, '',{},'','password')}
       {createField<LoginFromVapluesTypeKeys>(
         "",
         "rememberMe",
         [],
         Input,
-        { type: "checkbox" },
-        "Remeber me"
+        '',{},"Remeber me",'checkbox'
+        
       )}
 
       {captchaUrl && <img src={captchaUrl} />}
@@ -43,6 +42,7 @@ const LoginForm: React.FC<
           "captcha",
           [required],
           Input,
+          '',
           {},
           ""
         )}
@@ -62,7 +62,7 @@ export type LoginFormValuesType = {
   captcha: string;
 };
 
-type LoginFromVapluesTypeKeys = Extract<keyof LoginFormValuesType, string>;
+type LoginFromVapluesTypeKeys = GetStringKeys<LoginFormValuesType>;
 
 const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnProps>({
   form: "login",
