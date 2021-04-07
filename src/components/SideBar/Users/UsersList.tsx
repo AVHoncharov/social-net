@@ -3,16 +3,19 @@ import style from "./UsersList.module.css";
 import Paginator from "../../common/Paginator/Paginator";
 import User from "./User/User";
 import { UserType } from "../../../types/types";
+import UsersSearchForm from "./UsersSearchForm";
+import { UsersFilterType } from "../../../redux/users-reducer";
 
 type UsersListType = {
-  currentPage: number,
-  totalCount: number,
-  pageSize: number,
-  onPageChanged: (pageNumber: number) => void,
-  users: Array<UserType>,
-  followingInProgress: Array<number>,
-  follow: (userId: number) => void,
-  unfollow: (userId: number) => void
+  currentPage: number;
+  totalCount: number;
+  pageSize: number;
+  onPageChanged: (pageNumber: number) => void;
+  users: Array<UserType>;
+  followingInProgress: Array<number>;
+  follow: (userId: number) => void;
+  unfollow: (userId: number) => void;
+  onFilterChanged: (filter: UsersFilterType) => void
 };
 const UsersList: FC<UsersListType> = ({
   currentPage,
@@ -29,6 +32,8 @@ const UsersList: FC<UsersListType> = ({
   }
   return (
     <div className={style.usersList}>
+      <UsersSearchForm onFilterChanged={props.onFilterChanged}/>
+
       <Paginator
         currentPage={currentPage}
         onPageChanged={onPageChanged}
@@ -37,17 +42,21 @@ const UsersList: FC<UsersListType> = ({
       />
       <div>
         {users.map((user) => {
-          return <User
-            follow={props.follow}
-            unfollow={props.unfollow}
-            followingInProgress={props.followingInProgress}
-            user={user}
-            key={user.id}
-          />;
+          return (
+            <User
+              follow={props.follow}
+              unfollow={props.unfollow}
+              followingInProgress={props.followingInProgress}
+              user={user}
+              key={user.id}
+            />
+          );
         })}
       </div>
     </div>
   );
 };
+
+
 
 export default UsersList;

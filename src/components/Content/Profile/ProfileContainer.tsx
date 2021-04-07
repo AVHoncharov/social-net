@@ -63,7 +63,6 @@ class ProfileContainer extends React.PureComponent<ProfileContainerPropsType> {
     prevProps: ProfileContainerPropsType,
     prevState: ProfileContainerPropsType
   ) {
-    debugger;
     if (this.props.match.params.userId != prevProps.match.params.userId) {
       this.refreshProfile();
     } else if (!this.props.isAuth) {
