@@ -7,9 +7,7 @@ import { Route, BrowserRouter, withRouter, HashRouter } from "react-router-dom";
 import News from "./components/Content/News/News";
 import Music from "./components/Content/Music/Music";
 import Settings from "./components/Content/Settings/Settings";
-import UsersListContainer from "./components/SideBar/Users/UsersListContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import LoginContainer from "./components/Login/LoginContainer";
 import { connect, Provider } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
 import { compose } from "redux";
@@ -18,6 +16,8 @@ import { withSuspense } from "./hoc/WithSuspense";
 import Preloader from "./components/common/Preloader/Preloader";
 import { Switch } from "react-router";
 import { Redirect } from "react-router";
+import { UsersPage } from "./components/SideBar/Users/UsersPage";
+import { LoginPage } from "./components/Login/LoginPage";
 
 const DialogsContainer = React.lazy(() =>
   import("./components/Content/Dialogs/DialogsContainer")
@@ -63,11 +63,11 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               render={()=> <SuspendedProfile/>}
             />
             <Route path="/dialogs" render={()=> <SuspendedDialogs/>} />
-            <Route path="/users" render={() => <UsersListContainer />} />
+            <Route path="/users" render={() => <UsersPage />} />
             <Route path="/news" render={() => <News />} />
             <Route path="/music" render={() => <Music />} />
             <Route path="/settings" render={() => <Settings />} />
-            <Route path="/login" render={() => <LoginContainer />} />
+            <Route path="/login" render={() => <LoginPage />} />
 
             <Route path="*" render={() => <div>404 NOT FOUND</div>} />
           </Switch>
